@@ -28,3 +28,22 @@ features_train, features_test, labels_train, labels_test = preprocess()
 #########################################################
 
 
+from sklearn.svm import SVC
+clf = SVC(kernel='rbf', C=10000.0)
+
+# testing the speed with less datasets (1%)
+features_train = features_train[:int(len(features_train)/100)]
+labels_train = labels_train[:int(len(labels_train)/100)]
+
+t0 = time()
+clf.fit(features_train, labels_train)
+print("Training time:", round(time() - t0, 3), "s")
+
+t0 = time()
+pred = clf.predict(features_test)
+print(list(pred).count(1)) # print the number of Chris emails
+print("Prediction time:", round(time() - t0, 3), "s")
+
+from sklearn.metrics import accuracy_score
+acc_score = accuracy_score(pred, labels_test)
+print(acc_score)
