@@ -48,7 +48,6 @@ def featureFormat( dictionary, features, remove_NaN=True, remove_all_zeroes=True
             removal for zero or missing values.
     """
 
-
     return_list = []
 
     # Key order - first branch is for Python 3 compatibility on mini-projects,
@@ -67,12 +66,12 @@ def featureFormat( dictionary, features, remove_NaN=True, remove_all_zeroes=True
             try:
                 dictionary[key][feature]
             except KeyError:
-                print "error: key ", feature, " not present"
+                print("error: key ", feature, " not present")
                 return
             value = dictionary[key][feature]
-            if value=="NaN" and remove_NaN:
+            if value == "NaN" and remove_NaN:
                 value = 0
-            tmp_list.append( float(value) )
+            tmp_list.append(float(value))
 
         # Logic for deciding whether or not to add the data point.
         append = True
@@ -102,7 +101,7 @@ def featureFormat( dictionary, features, remove_NaN=True, remove_all_zeroes=True
     return np.array(return_list)
 
 
-def targetFeatureSplit( data ):
+def targetFeatureSplit(data):
     """ 
         given a numpy array like the one returned from
         featureFormat, separate out the first feature
@@ -118,8 +117,8 @@ def targetFeatureSplit( data ):
     target = []
     features = []
     for item in data:
-        target.append( item[0] )
-        features.append( item[1:] )
+        target.append(item[0])
+        features.append(item[1:])
 
     return target, features
 
