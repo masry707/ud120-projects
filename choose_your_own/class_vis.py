@@ -3,6 +3,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pylab as pl
+import base64
+import json
+
 
 def prettyPicture(clf, X_test, y_test):
     x_min = 0.0; x_max = 1.0
@@ -35,9 +38,6 @@ def prettyPicture(clf, X_test, y_test):
 
     plt.savefig("test.png")
 
-import base64
-import json
-import subprocess
 
 def output_image(name, format, bytes):
     image_start = "BEGIN_IMAGE_f9825uweof8jw9fj4r8"
@@ -46,5 +46,4 @@ def output_image(name, format, bytes):
     data['name'] = name
     data['format'] = format
     data['bytes'] = base64.encodestring(bytes)
-    print image_start+json.dumps(data)+image_end
-                                    
+    print(image_start+json.dumps(data)+image_end)
