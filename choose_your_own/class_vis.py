@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import pylab as pl
 import base64
 import json
+import time
 
 
 def prettyPicture(clf, X_test, y_test):
@@ -36,7 +37,8 @@ def prettyPicture(clf, X_test, y_test):
     plt.xlabel("bumpiness")
     plt.ylabel("grade")
 
-    plt.savefig("test.png")
+    image_filename = 'test' + str(int(time.time())) + '.png'
+    plt.savefig(image_filename)
 
 
 def output_image(name, format, bytes):
