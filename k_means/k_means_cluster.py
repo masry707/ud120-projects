@@ -43,15 +43,30 @@ data_dict = pickle.load(open("../final_project/final_project_dataset.pkl", "rb")
 ### there's an outlier--remove it! 
 data_dict.pop("TOTAL", 0)
 
+from sklearn.preprocessing import MinMaxScaler
 # min, max values taken by the “exercised_stock_options” feature used in this example
-exercised_stock_options = [v['exercised_stock_options'] for k, v in data_dict.items() if str(v['exercised_stock_options']).lower() != 'nan']
-print('********** Min exercised_stock_options \n', min(exercised_stock_options))
-print('********** max exercised_stock_options \n', max(exercised_stock_options))
+exercised_stock_options = [float(v['exercised_stock_options']) for k, v in data_dict.items() if str(v['exercised_stock_options']).lower() != 'nan']
+eso_min = float(min(exercised_stock_options))
+eso_max = float(max(exercised_stock_options))
+print('********** Min exercised_stock_options \n', eso_min)
+print('********** max exercised_stock_options \n', eso_max)
+
+exercised_stock_options_scaler = MinMaxScaler()
+eso = numpy.reshape([eso_min, 1000000., eso_max], (-1, 1))
+scaled_exercised_stock_options = exercised_stock_options_scaler.fit_transform(eso)
+print(scaled_exercised_stock_options)
 
 # min, max values taken by the “salary” feature used in this example
-salaries = [v['salary'] for k, v in data_dict.items() if str(v['salary']).lower() != 'nan']
-print('********** Min salaries \n', min(salaries))
-print('********** max salaries \n', max(salaries))
+salaries = [float(v['salary']) for k, v in data_dict.items() if str(v['salary']).lower() != 'nan']
+s_min = min(salaries)
+s_max = max(salaries)
+print('********** Min salaries \n', s_min)
+print('********** max salaries \n', s_max)
+
+salaries_scaler = MinMaxScaler()
+s = numpy.reshape([s_min, 200000., s_max], (-1, 1))
+scaled_salaries = salaries_scaler.fit_transform(s)
+print(scaled_salaries)
 
 
 ### the input features we want to use 
@@ -59,7 +74,7 @@ print('********** max salaries \n', max(salaries))
 feature_1 = "salary"
 feature_2 = "exercised_stock_options"
 feature_3 = "total_payments"
-poi  = "poi"
+poi = "poi"
 features_list = [poi, feature_1, feature_2, feature_3]
 data = featureFormat(data_dict, features_list)
 poi, finance_features = targetFeatureSplit(data)
