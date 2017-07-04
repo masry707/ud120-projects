@@ -23,7 +23,7 @@ from parse_out_email_text import parseOutText
 """
 
 
-from_sara  = open("from_sara.txt", "r")
+from_sara = open("from_sara.txt", "r")
 from_chris = open("from_chris.txt", "r")
 
 from_data = []
@@ -41,35 +41,50 @@ for name, from_person in [("sara", from_sara), ("chris", from_chris)]:
     for path in from_person:
         ### only look at first 200 emails when developing
         ### once everything is working, remove this line to run over full dataset
-        temp_counter += 1
+        # temp_counter += 1
         if temp_counter < 200:
-            path = os.path.join('..', path[:-1])
-            print path
+            path = os.path.join('../..', path[:-1])  # maildir is outside the repo
+            print(path)
             email = open(path, "r")
 
             ### use parseOutText to extract the text from the opened email
-
+            stemmed_text = parseOutText(email)
             ### use str.replace() to remove any instances of the words
             ### ["sara", "shackleton", "chris", "germani"]
+            stopwords = ["sara", "shackleton", "chris", "germani"]
+            for word in stopwords:
+                stemmed_text = stemmed_text.replace(word, '')
 
             ### append the text to word_data
-
+            word_data.append(stemmed_text)
             ### append a 0 to from_data if email is from Sara, and 1 if email is from Chris
-
+            from_data.append(0) if name == 'sara' else from_data.append(1)
 
             email.close()
 
-print "emails processed"
+# loading the results from the pickles instead of doing it every time
+# word_data = pickle.load(open("your_word_data.pkl", "rb"))
+# from_data = pickle.load(open("your_email_authors.pkl", "rb"))
+
+print("emails processed")
 from_sara.close()
 from_chris.close()
+print(word_data[152])
 
-pickle.dump( word_data, open("your_word_data.pkl", "w") )
-pickle.dump( from_data, open("your_email_authors.pkl", "w") )
+# pickle.dump(word_data, open("your_word_data.pkl", "wb"))
+# pickle.dump(from_data, open("your_email_authors.pkl", "wb"))
 
 
 
 
 
 ### in Part 4, do TfIdf vectorization here
+# from nltk.corpus import stopwords
+# sw = stopwords.words('english')
+from sklearn.feature_extraction.text import TfidfVectorizer
 
-
+vectorizer = TfidfVectorizer(stop_words='english')
+vectorizer.fit_transform(word_data)
+voc = vectorizer.get_feature_names()
+print(len(voc))
+print(voc[34597])

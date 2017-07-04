@@ -22,22 +22,22 @@ def parseOutText(f):
 
     ### split off metadata
     content = all_text.split("X-FileName:")
-    words = ""
+    words = []
     if len(content) > 1:
         ### remove punctuation
         table = content[1].maketrans('', '', string.punctuation)
         text_string = content[1].translate(table)
 
         ### project part 2: comment out the line below
-        words = text_string
-
+        # words = text_string
         ### split the text string into individual words, stem each word,
         ### and append the stemmed word to words (make sure there's a single
         ### space between each stemmed word)
-        
-
-
-
+        stemmer = SnowballStemmer("english")
+        text_string = text_string.split()
+        # text_string = filter(None, text_string)  # to remove the empty strings from the list
+        words = [stemmer.stem(word) for word in text_string]
+        words = ' '.join(words)
 
     return words
 
