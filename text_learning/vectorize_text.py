@@ -71,8 +71,8 @@ from_sara.close()
 from_chris.close()
 print(word_data[152])
 
-# pickle.dump(word_data, open("your_word_data.pkl", "wb"))
-# pickle.dump(from_data, open("your_email_authors.pkl", "wb"))
+pickle.dump(word_data, open("your_word_data.pkl", "wb"))
+pickle.dump(from_data, open("your_email_authors.pkl", "wb"))
 
 
 
